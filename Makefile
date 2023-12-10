@@ -1,25 +1,41 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-INCLUDES = ./includes
-LINKER = -L $(INCLUDES)/minilibx -L $(INCLUDES)/ft_printf -lmlx -lftprintf
-MLX = -I $(INCLUDES)/minilibx $(LINKER) -framework AppKit -framework OpenGL
+INC = ./includes
 RM = rm -rf
 NAME = so_long
 
-GET_NEXT_LINE_DIR = $(INCLUDES)/get_next_line
-GET_NEXT_LINE_FILES = $(GET_NEXT_LINE_DIR)/get_next_line_bonus.c \
-			$(GET_NEXT_LINE_DIR)/get_next_line_utils_bonus.c
+SL_SRC_DIR = ./so_long_utils/
+SL_SRC = ft_check_objectives.c \
+			ft_check_playable.c \
+			ft_error.c \
+			ft_handle_input.c \
+			ft_init.c \
+			ft_read_map.c \
+			ft_render_map.c
+SL_UTILS = $(addprefix $(SL_SRC_DIR),$(SL_SRC))
+
+LIBFT = -I $(INC)/libft -L $(INC)/lifbt -lft
+FT_PRINTF = -I $(INC)/ft_printf -L $(INC)/ft_printf -lftprintf
+MLX = -I $(INC)/minilibx -L $(INC)/minilibx -lmlx -framework AppKit -framework OpenGL
+GNL_DIR = $(INC)/get_next_line
+GNL_FILES = $(GNL_DIR)/get_next_line_bonus.c \
+			$(GNL_DIR)/get_next_line_utils_bonus.c
+LIBFT_A = $(INC)/libft/libft.a
+LIBFTPRINTF_A = $(INC)/ft_printf/libftprintf.a
 
 all:
-	make -C ./includes/ft_printf
-	cp ./includes/ft_printf/libftprintf.a ./
-	make -C ./includes/libft
-	cp ./includes/libft/libft.a ./
-	$(CC) $(CFLAGS) $(MLX) test.c libft.a libftprintf.a $(GET_NEXT_LINE_FILES) -o $(NAME)
+	@make -C ./includes/ft_printf
+	@make -C ./includes/libft
+	@$(CC) $(CFLAGS) $(MLX) $(NAME).c $(SL_UTILS) $(LIBFT_A) $(LIBFTPRINTF_A) $(GNL_FILES) -o $(NAME)
 
 clean:
-	make clean -C ./includes/libft
-	make clean -C ./includes/ft_printf
-	$(RM) $(NAME)
+	@make clean -C $(INC)/libft
+	@make clean -C $(INC)/ft_printf
+	@make clean -C $(INC)/minilibx
 
-.PHONY: all clean
+fclean: clean
+	@make fclean -C $(INC)/libft
+	@make fclean -C $(INC)/ft_printf
+	@$(RM) $(NAME)
+
+.PHONY: all clean fclean
