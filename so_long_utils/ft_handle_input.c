@@ -6,7 +6,7 @@
 /*   By: qang <qang@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 14:29:45 by qang              #+#    #+#             */
-/*   Updated: 2023/12/10 14:30:47 by qang             ###   ########.fr       */
+/*   Updated: 2023/12/10 14:44:00 by qang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_print_movements(t_game *game)
 
 	movements = ft_itoa(game->movements);
 	phrase = ft_strjoin("Movements : ", movements);
-	mlx_string_put(game->mlx, game->win_ptr, 40, 20, 99999, phrase);
+	mlx_string_put(game->mlx, game->win_ptr, 18, 12, 200200200, phrase);
 	free(movements);
 	free(phrase);
 }
