@@ -6,7 +6,7 @@
 /*   By: qang <qang@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 21:02:54 by qang              #+#    #+#             */
-/*   Updated: 2023/12/10 14:33:59 by qang             ###   ########.fr       */
+/*   Updated: 2023/12/10 14:56:18 by qang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void	ft_check_map_file(t_game *game, char *map_str)
 
 	if (*map_str == '\n')
 		ft_error(game, "map no good");
-	if (map_str[ft_strlen(map_str) - 1] == '\n')
-		ft_error(game, "map newline at end");
+	/*if (map_str[ft_strlen(map_str) - 1] == '\n')
+		ft_error(game, "map newline at end");*/
 	index = 1;
 	while (map_str[index + 1])
 	{
