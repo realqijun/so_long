@@ -53,7 +53,7 @@ void	ft_check_playable(t_game *game)
 	char	**temp;
 
 	exitable = false;
-	temp = (char **)malloc(sizeof(char *) * (game->map_data.rows));
+	temp = (char **)malloc(sizeof(char *) * (game->map_data.rows + 1));
 	if (temp == NULL)
 		ft_error(game, "malloc fail");
 	ft_copy_map(game, temp);

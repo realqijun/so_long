@@ -4,7 +4,7 @@ void	ft_win_game(t_game *game)
 {
 	ft_free_everything(game);
 	ft_printf("٩(ˊᗜˋ*)و♡ you won! ♡٩(ˊᗜˋ*)و ");
-	exit(EXIT_FAILURE);
+	exit(EXIT_SUCCESS);
 }
 
 int	main(int ac, char **av)
@@ -14,21 +14,11 @@ int	main(int ac, char **av)
 	if (ac != 2)
 		return 0;
 	game = (t_game *)malloc(sizeof(t_game));
+	if (!game)
+		ft_error(game, "malloc fail");
 	ft_read_map(game, av[1]);
 	ft_init_vars(game);
-	game->mlx = mlx_init();
-	if (game->mlx == NULL)
-	{
-		free(game->mlx);
-		ft_error(game, "no mlx");
-	}
-	game->win_ptr = mlx_new_window(game->mlx, game->map_data.columns * IMG_WIDTH, game->map_data.rows * IMG_HEIGHT, "so_long");
-	if (game->win_ptr == NULL)
-	{
-		free(game->win_ptr);
-		ft_error(game, "no win");
-	}
-	ft_init_vars(game);
+	ft_init_mlx(game);
 	ft_check_map(game);
 	ft_check_playable(game);
 	ft_init_sprite(game);

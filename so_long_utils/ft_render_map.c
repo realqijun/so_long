@@ -12,6 +12,11 @@
 
 #include "../so_long.h"
 
+void	ft_render_player(t_game *game, int x, int y);
+void	ft_identify_sprite(t_game *game, int x, int y);
+void	ft_render_sprite(t_game *game, t_image img, int x, int y);
+int	ft_render_map(t_game *game);
+
 int	ft_render_map(t_game *game)
 {
 	int	x;
@@ -61,6 +66,8 @@ void	ft_identify_sprite(t_game *game, int x, int y)
 	}
 	else if (item == PLAYER)
 		ft_render_player(game, x, y);
+	else if (item == ENEMY)
+		ft_render_sprite(game, game->enemy, x, y);
 }
 
 void	ft_render_sprite(t_game *game, t_image img, int x, int y)

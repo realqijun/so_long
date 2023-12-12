@@ -12,6 +12,12 @@
 
 #include "../so_long.h"
 
+void	ft_error(t_game *game, char *msg);
+void	ft_destroy_images(t_game *game);
+void	ft_free_map(t_game *game);
+void	ft_free_everything(t_game *game);
+int	ft_close_game(t_game *game);
+
 void	ft_error(t_game *game, char *msg)
 {
 	if (game->mloc == true)

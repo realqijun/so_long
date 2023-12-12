@@ -12,6 +12,28 @@
 
 #include "../so_long.h"
 
+void	ft_init_sprite(t_game *game);
+void	ft_init_vars(t_game *game);
+t_image	ft_new_sprite(t_game *game, void *mlx, char *path);
+void	ft_init_mlx(t_game *game);
+
+void	ft_init_mlx(t_game *game)
+{
+	game->mlx = mlx_init();
+	if (game->mlx == NULL)
+	{
+		free(game->mlx);
+		ft_error(game, "no mlx");
+	}
+	game->win_ptr = mlx_new_window(game->mlx, game->map_data.columns * IMG_WIDTH, \
+			game->map_data.rows * IMG_HEIGHT, "so_long");
+	if (game->win_ptr == NULL)
+	{
+		free(game->win_ptr);
+		ft_error(game, "no win");
+	}
+}
+
 void	ft_init_vars(t_game *game)
 {
 	game->map_data.coins = 0;
@@ -27,6 +49,7 @@ void	ft_init_sprite(t_game *game)
 	game->wall = ft_new_sprite(game, game->mlx, WALL_XPM);
 	game->floor = ft_new_sprite(game, game->mlx, FLOOR_XPM);
 	game->coins = ft_new_sprite(game, game->mlx, GEO_XPM);
+	game->enemy = ft_new_sprite(game, game->mlx, ENEMY_XPM);
 	game->player_front = ft_new_sprite(game, game->mlx, PLAYER_FRONT);
 	game->player_left = ft_new_sprite(game, game->mlx, PLAYER_LEFT);
 	game->player_right = ft_new_sprite(game, game->mlx, PLAYER_RIGHT);

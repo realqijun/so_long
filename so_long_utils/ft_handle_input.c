@@ -12,6 +12,10 @@
 
 #include "../so_long.h"
 
+void	ft_move_player(t_game *game, int go_x, int go_y, int facing);
+int	ft_handle_input(int key, t_game *game);
+void	ft_print_movements(t_game *game);
+
 void	ft_print_movements(t_game *game)
 {
 	char	*movements;
@@ -51,6 +55,8 @@ void	ft_move_player(t_game *game, int go_x, int go_y, int facing)
 	curr_x = game->map_data.plyr_x;
 	curr_y = game->map_data.plyr_y;
 	game->plyr_facing = facing;
+	if (game->map_data.map[go_y][go_x] == ENEMY)
+		ft_win_game(game);
 	if (game->map_data.map[go_y][go_x] == EXIT && game->map_data.coins == 0)
 		ft_win_game(game);
 	else if (game->map_data.map[go_y][go_x] == FLOOR ||

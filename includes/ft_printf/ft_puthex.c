@@ -6,105 +6,100 @@
 /*   By: qang <qang@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 16:00:19 by qang              #+#    #+#             */
-/*   Updated: 2023/05/17 16:29:38 by qang             ###   ########.fr       */
+/*   Updated: 2023/05/16 11:00:30 by qang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	s_puthex5(unsigned int n, int *count, t_flags *flags, int c)
+static size_t	digit(unsigned int n)
 {
-	size_t	len;
+	size_t	i;
 
-	len = hdigits(n);
-	if (flags->base && n != 0 && !(flags->prec > flags->width))
-		len += 2;
-	if (flags->pad)
+	i = 0;
+	if (n == 0)
+		return (1);
+	while (n > 0)
 	{
-		writebase(count, flags, c);
-		while ((flags->width)-- > len)
-			s_putchar('0', count);
-		ft_puthex(n, count, c);
+		n /= 16;
+		i++;
 	}
-	else
-	{
-		writebase(count, flags, c);
-		ft_puthex(n, count, c);
-		while ((flags->width)-- > len)
-			s_putchar(' ', count);
-	}
+	return (i);
 }
 
-void	s_puthex4(unsigned int n, int *count, t_flags *flags, int c)
+static void	writebase(int *count, size_t *len, t_flag *flags, int c)
+{
+	if (flags->base)
+	{
+		if (c == 'x')
+		{
+			*count += write(1, "0x", 2);
+			*len += 2;
+		}
+		else
+		{
+			*count += write(1, "0X", 2);
+			*len += 2;
+		}
+	}
+	if (flags->base && flags->precision)
+		*len -= 2;
+}
+
+static void	s_puthex3(unsigned int n, int *count, t_flag *flags, int c)
 {
 	size_t	len;
 
-	len = hdigits(n);
-	if (flags->base && n != 0 && !(flags->prec > flags->width))
-		len += 2;
-	while ((flags->width)-- > flags->prec)
-		s_putchar(' ', count);
-	writebase(count, flags, c);
-	while ((flags->prec)-- > len)
-		s_putchar('0', count);
+	len = digit(n);
+	writebase(count, &len, flags, c);
 	ft_puthex(n, count, c);
-}
-
-void	s_puthex3(unsigned int n, int *count, t_flags *flags, int c)
-{
-	size_t	len;
-	size_t	prec;
-
-	prec = flags->prec;
-	len = hdigits(n);
-	if (flags->base && n != 0 && !(flags->prec > flags->width))
-		len += 2;
-	if (flags->justify)
-	{
-		writebase(count, flags, c);
-		while ((flags->prec)-- > len)
+	if (flags->precision || flags->pad)
+		while ((flags->width)-- > len)
 			s_putchar('0', count);
-		ft_puthex(n, count, c);
-		while ((flags->width)-- > prec)
-			s_putchar(' ', count);
-	}
 	else
-		s_puthex4(n, count, flags, c);
+		while ((flags->width)-- > len)
+			s_putchar(' ', count);
 }
 
-void	s_puthex2(unsigned int n, int *count, t_flags *flags, int c)
+static void	s_puthex2(unsigned int n, int *count, t_flag *flags, int c)
 {
 	size_t	len;
 
-	len = hdigits(n);
-	if (flags->base && n != 0 && !(flags->prec > flags->width))
-		len += 2;
-	if (flags->prec > len)
+	len = digit(n);
+	if (flags->precision || flags->pad)
 	{
-		writebase(count, flags, c);
-		while ((flags->prec)-- > len)
+		writebase(count, &len, flags, c);
+		while ((flags->width)-- > len)
 			s_putchar('0', count);
 		ft_puthex(n, count, c);
 	}
 	else
-	{
-		writebase(count, flags, c);
+	{			
+		if (flags->base)
+			len += 2;
+		while ((flags->width)-- > len)
+			s_putchar(' ', count);
+		writebase(count, &len, flags, c);
 		ft_puthex(n, count, c);
 	}
 }
 
-void	s_puthex(unsigned int n, int *count, t_flags *flags, int c)
+void	s_puthex(unsigned int n, int *count, t_flag *flags, int c)
 {
-	if (flags->base && n == 0)
-		flags->base = 0;
-	if (n == 0 && flags->precision && !(flags->prec))
+	size_t	len;
+
+	len = digit(n);
+	if (flags->width > len)
 	{
-		while ((flags->width)--)
-			s_putchar(' ', count);
-		return ;
+		if (flags->justify)
+			s_puthex3(n, count, flags, c);
+		else
+			s_puthex2(n, count, flags, c);
 	}
-	if (flags->prec >= flags->width)
-		s_puthex2(n, count, flags, c);
 	else
-		s_puthex7(n, count, flags, c);
+	{
+		if (n != 0)
+			writebase(count, &len, flags, c);
+		ft_puthex(n, count, c);
+	}
 }

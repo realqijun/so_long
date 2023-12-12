@@ -12,33 +12,28 @@
 
 #include "../so_long.h"
 
-void	ft_check_rows(t_game *game)
-{
-	int	y;
+void	ft_check_walls(t_game *game);
+void	ft_count_objectives(t_game *game);
+void	ft_check_objectives(t_game *game);
+void	ft_check_map(t_game *game);
 
-	y = 0;
-	while (y < game->map_data.rows)
+void	ft_check_walls(t_game *game)
+{
+	int	i;
+	
+	i = 0;
+	while (i < game->map_data.rows)
 	{
-		if (game->map_data.map[y][0] != WALL)
-			ft_error(game, "no wall");
-		else if (game->map_data.map[y][game->map_data.columns - 1] != WALL)
-			ft_error(game, "no wall");
-		y++;
+		if (game->map_data.map[i][0] != WALL || game->map_data.map[i][game->map_data.columns - 1] != WALL)
+			ft_error(game, "row check fail");
+		i++;
 	}
-}
-
-void	ft_check_cols(t_game *game)
-{
-	int	x;
-
-	x = 0;
-	while (x < game->map_data.columns)
+	i = 0;
+	while (i < game->map_data.columns)
 	{
-		if (game->map_data.map[0][x] != WALL)
-			ft_error(game, "no wall");
-		else if (game->map_data.map[game->map_data.rows - 1][x] != WALL)
-			ft_error(game, "no wall");
-		x++;
+		if (game->map_data.map[0][i] != WALL || game->map_data.map[game->map_data.rows - 1][i] != WALL)
+			ft_error(game, "column check fail");
+		i++;
 	}
 }
 
@@ -50,10 +45,11 @@ void	ft_count_objectives(t_game *game)
 	y = 0;
 	while (y < game->map_data.rows)
 	{
+
 		x = 0;
 		while (x < game->map_data.columns)
 		{
-			if (!ft_strchr("01CEP", game->map_data.map[y][x]))
+			if (!ft_strchr("01CEPX", game->map_data.map[y][x]))
 				ft_error(game, "extra stuff");
 			else if (game->map_data.map[y][x] == PLAYER)
 			{
@@ -83,8 +79,9 @@ void	ft_check_objectives(t_game *game)
 
 void	ft_check_map(t_game *game)
 {
-	ft_check_cols(game);
-	ft_check_rows(game);
+	ft_printf("row:%d\n", game->map_data.rows);
+	ft_printf("col:%d\n", game->map_data.columns);
+	ft_check_walls(game);
 	ft_count_objectives(game);
 	ft_check_objectives(game);
 }

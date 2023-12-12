@@ -6,11 +6,38 @@
 /*   By: qang <qang@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 17:45:23 by qang              #+#    #+#             */
-/*   Updated: 2023/05/19 12:53:38 by qang             ###   ########.fr       */
+/*   Updated: 2023/05/16 11:54:58 by qang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+void	ss_putchar(int c, int *count, t_flag *flags)
+{
+	if (flags->width > 1)
+	{
+		if (flags->justify)
+		{
+			s_putchar(c, count);
+			while ((flags->width)-- > 1)
+				s_putchar(' ', count);
+		}
+		else
+		{
+			while ((flags->width)-- > 1)
+				s_putchar(' ', count);
+			s_putchar(c, count);
+		}
+	}
+	else
+		s_putchar(c, count);
+}
+
+void	s_putchar(int c, int *count)
+{
+	write(1, &c, 1);
+	*count += 1;
+}
 
 static size_t	ft_strlen(const char *str)
 {
@@ -22,92 +49,40 @@ static size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-static void	s_putstr4(char *str, int *count, t_flags *flags, size_t len)
+static void	s_putstr2(char *str, int *count, t_flag *flags, size_t len)
 {
-	if (flags->justify)
+	if (!(flags->precision))
 	{
+		if (!(flags->justify))
+			while ((flags->width)-- > len)
+				s_putchar(' ', count);
 		while (*str)
 			s_putchar(*str++, count);
-		while ((flags->width)-- > len)
-			s_putchar(' ', count);
+		if (flags->justify)
+			while ((flags->width)-- > len)
+				s_putchar(' ', count);
 	}
 	else
-	{
-		while ((flags->width)-- > len)
-		{
-			if (flags->pad)
-				s_putchar('0', count);
-			else
-				s_putchar(' ', count);
-		}
 		while (*str)
 			s_putchar(*str++, count);
-	}
 }
 
-static void	s_putstr3(char *str, int *count, t_flags *flags)
-{
-	size_t	prec;
-
-	prec = flags->prec;
-	if (flags->justify)
-	{
-		while (prec--)
-			s_putchar(*str++, count);
-		while ((flags->width)-- > flags->prec)
-			s_putchar(' ', count);
-	}
-	else
-	{
-		while ((flags->width)-- > prec)
-		{
-			if (flags->pad)
-				s_putchar('0', count);
-			else
-				s_putchar(' ', count);
-		}
-		while (prec--)
-			s_putchar(*str++, count);
-	}
-}
-
-static void	s_putstr2(char *str, int *count, t_flags *flags, size_t len)
-{
-	if (flags->justify)
-	{
-		while (*str)
-			s_putchar(*str++, count);
-		while ((flags->width)-- > len)
-			s_putchar(' ', count);
-	}
-	else
-	{
-		while ((flags->width)-- > len)
-		{
-			if (flags->pad)
-				s_putchar('0', count);
-			else
-				s_putchar(' ', count);
-		}
-		while (*str)
-			s_putchar(*str++, count);
-	}
-}
-
-void	s_putstr(char *str, int *count, t_flags *flags)
+void	s_putstr(char *str, int *count, t_flag *flags)
 {
 	size_t	len;
 
 	if (!str)
 		str = "(null)";
 	len = ft_strlen(str);
-	if (flags->precision)
+	if (flags->width <= len)
 	{
-		if (flags->prec >= len)
-			s_putstr2(str, count, flags, len);
+		if (!(flags->precision))
+			while (*str)
+				s_putchar(*str++, count);
 		else
-			s_putstr3(str, count, flags);
+			while ((flags->width)--)
+				s_putchar(*str++, count);
 	}
 	else
-		s_putstr4(str, count, flags, len);
+		s_putstr2(str, count, flags, len);
 }

@@ -60,7 +60,7 @@ void	dllm(char **kuetiau, char **siu_pao)
 
 char	*r_and_r(int fd, char **kuetiau, char *siu_pao, ssize_t readed)
 {
-	if (ft_strchr(*kuetiau) || readed == 0)
+	if (ft_strcher(*kuetiau) || readed == 0)
 	{
 		throw_food_away(&siu_pao, &free);
 		if (!(**kuetiau))

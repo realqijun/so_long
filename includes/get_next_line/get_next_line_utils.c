@@ -44,7 +44,7 @@ char	*fusion(char *kuetiau, char *siu_pao)
 	return (result);
 }
 
-int	ft_strchr(char *str)
+int	ft_strcher(char *str)
 {
 	while (*str)
 	{

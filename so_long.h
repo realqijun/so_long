@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <fcntl.h>
 #include "./includes/ft_printf/ft_printf.h"
 #include "./includes/get_next_line/get_next_line_bonus.h"
 #include "./includes/libft/libft.h"
@@ -13,7 +15,7 @@
 #define PLAYER_FRONT "assets/sprites/player_front.xpm"
 #define PLAYER_LEFT "assets/sprites/player_left.xpm"
 #define PLAYER_BACK "assets/sprites/player_back.xpm"
-//#define ENEMY "assets/sprites/enemy.xpm"
+#define ENEMY_XPM "assets/sprites/husk.xpm"
 #define GEO_XPM "assets/sprites/coin.xpm"
 #define EXIT_OPEN "assets/sprites/exit_open.xpm"
 #define EXIT_CLOSE "assets/sprites/exit_close.xpm"	
@@ -25,6 +27,7 @@
 #define GEO 'C'
 #define EXIT 'E'
 #define PLAYER 'P'
+#define ENEMY 'X'
 
 #define RIGHT 214
 #define LEFT 213
@@ -69,15 +72,17 @@ typedef struct s_game
 	t_image		coins;
 	t_image		exit_open;
 	t_image		exit_close;
+	t_image		enemy;
 	t_image		player_front;
 	t_image		player_left;
 	t_image		player_right;
 	t_image		player_back;
 }	t_game;
 
+void	ft_init_mlx(t_game *game);
 void	ft_free_map(t_game *game);
 void	ft_error(t_game *game, char *msg);
-void	ft_check_map_input(t_game *game, char *map_str);
+void	ft_check_map_nl(t_game *game, char *map_str);
 void	ft_read_map(t_game *game, char *map_filename);
 void	ft_init_vars(t_game *game);
 void	ft_init_sprite(t_game *game);
@@ -91,8 +96,7 @@ void	ft_move_player(t_game *game, int go_x, int go_y, int facing);
 int		ft_close_game(t_game *game);
 int		ft_handle_input(int key, t_game *game);
 void	ft_win_game(t_game *game);
-void	ft_check_rows(t_game *game);
-void	ft_check_cols(t_game *game);
+void	ft_check_walls(t_game *game);
 void	ft_count_objectives(t_game *game);
 void	ft_check_objectives(t_game *game);
 void	ft_check_exitable(char **map_temp, int x, int y, bool *exitable);

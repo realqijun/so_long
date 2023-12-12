@@ -13,22 +13,22 @@
 #include "../so_long.h"
 
 void	ft_check_map_name(t_game *game, char *map_filename);
-void	ft_check_map_file(t_game *game, char *map_str);
+void	ft_check_map_nl(t_game *game, char *map_str);
 void	ft_read_map(t_game *game, char *map_filename);
 
-void	ft_check_map_file(t_game *game, char *map_str)
+void	ft_check_map_nl(t_game *game, char *map_str)
 {
 	int	index;
 
 	if (*map_str == '\n')
-		ft_error(game, "map no good");
-	/*if (map_str[ft_strlen(map_str) - 1] == '\n')
-		ft_error(game, "map newline at end");*/
+		ft_error(game, "map has newline at start");
+	if (map_str[ft_strlen(map_str) - 1] == '\n')
+		ft_error(game, "map has newline at end");
 	index = 1;
 	while (map_str[index + 1])
 	{
 		if (map_str[index] == '\n' && map_str[index + 1] == '\n')
-			ft_error(game, "map double newline");
+			ft_error(game, "map has double newline");
 		index++;
 	}
 }
@@ -47,6 +47,7 @@ void	ft_read_map(t_game *game, char *map_filename)
 
 	game->mloc = false;
 	game->map_data.rows = 0;
+	ft_check_map_name(game, map_filename);
 	fd = open(map_filename, O_RDONLY);
 	if (fd == -1)
 		ft_error(game, "map not valid");
@@ -61,7 +62,7 @@ void	ft_read_map(t_game *game, char *map_filename)
 		game->map_data.rows++;
 	}
 	close(fd);
-	ft_check_map_file(game, temp);
+	ft_check_map_nl(game, temp);
 	game->map_data.map = ft_split(temp, '\n');
 	game->mloc = true;
 	free(temp);

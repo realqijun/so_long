@@ -27,7 +27,7 @@
 char	*get_next_line(int fd);
 char	*fusion(char *kuetiau, char *siu_pao);
 void	throw_food_away(char **food, void (*yeet)(void *));
-int		ft_strchr(char *str);
+int		ft_strcher(char *str);
 char	*get_rest_of_the_string(char *kuetiau);
 char	*r_and_r(int fd, char **kuetiau, char *siu_pao, ssize_t readed);
 void	dllm(char **kuetiau, char **siu_pao);

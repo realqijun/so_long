@@ -6,77 +6,92 @@
 /*   By: qang <qang@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 12:14:14 by qang              #+#    #+#             */
-/*   Updated: 2023/05/22 14:51:24 by qang             ###   ########.fr       */
+/*   Updated: 2023/05/16 12:08:13 by qang             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	s_putnbr5(int n, int *count, t_flags *flags, size_t len)
+static size_t	digits(int n)
 {
-	size_t	prec;
+	unsigned int	nb;
+	size_t			i;
 
-	prec = flags->prec;
-	if (flags->sign || (flags->precision && n < 0))
-		prec++;
-	while ((flags->width)-- > prec)
-		s_putchar(' ', count);
-	ft_putsign(n, count, flags);
-	while ((flags->prec)-- > len)
-		s_putchar('0', count);
-	ft_putnbr(n, count);
+	i = 0;
+	if (n < 0)
+		nb = -n;
+	else
+		nb = n;
+	while (nb > 0)
+	{
+		nb /= 10;
+		i++;
+	}
+	if (n == 0)
+		return (1);
+	return (i);
 }
 
-void	s_putnbr4(int n, int *count, t_flags *flags, size_t len)
+static void	ft_putnbr(int n, int *count)
 {
-	if (flags->pad)
+	unsigned int	nb;
+
+	if (n < 0)
+		nb = -n;
+	else
+		nb = n;
+	if (nb > 9)
+		ft_putnbr(nb / 10, count);
+	nb = nb % 10 + 48;
+	s_putchar(nb, count);
+}
+
+static void	ft_putsign(int n, int *count, t_flag *flags)
+{
+	if (flags->space)
+	{
+		if (n >= 0)
+			s_putchar(' ', count);
+		else
+			s_putchar('-', count);
+	}
+	else if (flags->sign)
+	{
+		if (n >= 0)
+			s_putchar('+', count);
+		else
+			s_putchar('-', count);
+	}
+	else if (n < 0)
+		s_putchar('-', count);
+}
+
+static void	s_putnbr2(int n, int *count, t_flag *flags, size_t len)
+{
+	if (flags->pad || flags->precision)
 	{
 		ft_putsign(n, count, flags);
 		while ((flags->width)-- > len)
 			s_putchar('0', count);
 		ft_putnbr(n, count);
 	}
-	else
+	else if (flags->justify)
 	{
 		ft_putsign(n, count, flags);
 		ft_putnbr(n, count);
 		while ((flags->width)-- > len)
 			s_putchar(' ', count);
-	}
-}
-
-void	s_putnbr3(int n, int *count, t_flags *flags, size_t len)
-{
-	size_t	prec;
-
-	prec = flags->prec;
-	ft_putsign(n, count, flags);
-	while (prec-- > len)
-		s_putchar('0', count);
-	ft_putnbr(n, count);
-	if (n < 0)
-		(flags->width)--;
-	while ((flags->width)-- > flags->prec)
-		s_putchar(' ', count);
-}
-
-void	s_putnbr2(int n, int *count, t_flags *flags, size_t len)
-{
-	if (flags->prec > len)
-	{
-		ft_putsign(n, count, flags);
-		while ((flags->prec)-- > len)
-			s_putchar('0', count);
-		ft_putnbr(n, count);
-	}
+	}			
 	else
 	{
+		while ((flags->width)-- > len)
+			s_putchar(' ', count);
 		ft_putsign(n, count, flags);
 		ft_putnbr(n, count);
 	}
 }
 
-void	s_putnbr(int n, int *count, t_flags *flags)
+void	s_putnbr(int n, int *count, t_flag *flags)
 {
 	size_t	len;
 
@@ -85,16 +100,13 @@ void	s_putnbr(int n, int *count, t_flags *flags)
 		len++;
 	if (flags->precision && n < 0)
 		len--;
-	if (flags->pad && flags->justify)
-		flags->pad = 0;
-	if (flags->precision && !(flags->prec) && n == 0)
-	{
-		while ((flags->width)--)
-			s_putchar(' ', count);
-		return ;
-	}
-	if (flags->prec >= flags->width)
+	if (flags->width > len)
 		s_putnbr2(n, count, flags, len);
 	else
-		s_putnbr7(n, count, flags, len);
+	{
+		if (flags->precision && n == 0)
+			return ;
+		ft_putsign(n, count, flags);
+		ft_putnbr(n, count);
+	}
 }
