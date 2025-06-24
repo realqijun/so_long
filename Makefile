@@ -32,14 +32,14 @@ $(NAME): $(SL_O)
 	make -C ./includes/minilibx
 	make -C ./includes/ft_printf
 	make -C ./includes/libft
-	$(CC) $(CFLAGS) $(MLX) $(NAME).c $(SL_UTILS) -g $(LIBFT_A) $(LIBFTPRINTF_A) $(GNL_FILES) -o $(NAME)
+	$(CC) $(CFLAGS) $(MLX) $(NAME).c $(SL_UTILS) $(LIBFT_A) $(LIBFTPRINTF_A) $(GNL_FILES) -o $(NAME)
 
 
-fsan: 
-	make -C ./includes/minilibx
-	make -C ./includes/ft_printf
-	make -C ./includes/libft
-	$(CC) $(CFLAGS) $(FSAN) $(MLX) $(NAME).c $(SL_UTILS) -g $(LIBFT_A) $(LIBFTPRINTF_A) $(GNL_FILES) -o $(NAME)
+# debug: 
+# 	make -C ./includes/minilibx
+# 	make -C ./includes/ft_printf
+# 	make -C ./includes/libft
+# 	$(CC) $(CFLAGS) $(FSAN) $(MLX) $(NAME).c $(SL_UTILS) -g $(LIBFT_A) $(LIBFTPRINTF_A) $(GNL_FILES) -o $(NAME)
 
 clean:
 	make clean -C $(INC)/libft
