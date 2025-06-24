@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -Werror
 INC = ./includes
 RM = rm -rf
 NAME = so_long
-FSAN = -g3 -fsanitize=address
+# FSAN = -g3 -fsanitize=address
 
 SL_UTIL_DIR = ./so_long_utils/
 SL_C = ft_check_objectives.c \
