@@ -1,3 +1,6 @@
 .DS_Store
 *.o
 *.a
+so_long
+.cache
+so_long.dSYM

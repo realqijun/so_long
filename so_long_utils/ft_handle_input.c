@@ -22,7 +22,7 @@ void	ft_print_movements(t_game *game)
 	char	*phrase;
 
 	movements = ft_itoa(game->movements);
-	phrase = ft_strjoin("Movements : ", movements);
+	phrase = ft_strjoin("Moves: ", movements);
 	mlx_string_put(game->mlx, game->win_ptr, 18, 12, 200200200, phrase);
 	free(movements);
 	free(phrase);
@@ -56,9 +56,9 @@ void	ft_move_player(t_game *game, int go_x, int go_y, int facing)
 	curr_y = game->map_data.plyr_y;
 	game->plyr_facing = facing;
 	if (game->map_data.map[go_y][go_x] == ENEMY)
-		ft_win_game(game);
+		ft_end_game(game, false);
 	if (game->map_data.map[go_y][go_x] == EXIT && game->map_data.coins == 0)
-		ft_win_game(game);
+		ft_end_game(game, true);
 	else if (game->map_data.map[go_y][go_x] == FLOOR ||
 			game->map_data.map[go_y][go_x] == GEO)
 	{

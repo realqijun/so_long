@@ -20,10 +20,12 @@ int	ft_close_game(t_game *game);
 
 void	ft_error(t_game *game, char *msg)
 {
+	ft_printf("Error\n%s", msg);
+	if (!game)
+		exit(EXIT_FAILURE);
 	if (game->mloc == true)
 		ft_free_map(game);
 	free(game);
-	ft_printf("Error\n%s", msg);
 	exit(EXIT_FAILURE);
 }
 
@@ -62,8 +64,8 @@ void	ft_free_everything(t_game *game)
 
 int	ft_close_game(t_game *game)
 {
-	ft_printf("Movements: %d\n", game->movements);
+	ft_printf("Total moves: %d\n", game->movements);
 	ft_free_everything(game);
-	ft_printf("CLOSED\n");
-	exit(EXIT_FAILURE);
+	ft_printf("GAME CLOSED\n");
+	exit(EXIT_SUCCESS);
 }

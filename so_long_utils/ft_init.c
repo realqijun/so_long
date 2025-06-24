@@ -23,14 +23,14 @@ void	ft_init_mlx(t_game *game)
 	if (game->mlx == NULL)
 	{
 		free(game->mlx);
-		ft_error(game, "no mlx");
+		ft_error(game, "Failed to create a game instance.");
 	}
 	game->win_ptr = mlx_new_window(game->mlx, game->map_data.columns * IMG_WIDTH, \
 			game->map_data.rows * IMG_HEIGHT, "so_long");
 	if (game->win_ptr == NULL)
 	{
 		free(game->win_ptr);
-		ft_error(game, "no win");
+		ft_error(game, "Failed to set up a window.");
 	}
 }
 
@@ -64,6 +64,6 @@ t_image	ft_new_sprite(t_game *game, void *mlx, char *path)
 
 	img.img_ptr = mlx_xpm_file_to_image(mlx, path, &img.x, &img.y);
 	if (img.img_ptr == NULL)
-		ft_error(game, "no img");
+		ft_error(game, "Unable to find image.");
 	return (img);
 }

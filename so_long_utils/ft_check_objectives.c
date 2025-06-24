@@ -25,14 +25,14 @@ void	ft_check_walls(t_game *game)
 	while (i < game->map_data.rows)
 	{
 		if (game->map_data.map[i][0] != WALL || game->map_data.map[i][game->map_data.columns - 1] != WALL)
-			ft_error(game, "row check fail");
+			ft_error(game, "Error: Missing a vertical wall piece.");
 		i++;
 	}
 	i = 0;
 	while (i < game->map_data.columns)
 	{
 		if (game->map_data.map[0][i] != WALL || game->map_data.map[game->map_data.rows - 1][i] != WALL)
-			ft_error(game, "column check fail");
+			ft_error(game, "Error: Missing a horizontal wall piece.");
 		i++;
 	}
 }
@@ -50,7 +50,7 @@ void	ft_count_objectives(t_game *game)
 		while (x < game->map_data.columns)
 		{
 			if (!ft_strchr("01CEPX", game->map_data.map[y][x]))
-				ft_error(game, "extra stuff");
+				ft_error(game, "Error: Undefined objects present in map provided.");
 			else if (game->map_data.map[y][x] == PLAYER)
 			{
 				game->map_data.players++;
@@ -70,17 +70,18 @@ void	ft_count_objectives(t_game *game)
 void	ft_check_objectives(t_game *game)
 {
 	if (game->map_data.coins == 0)
-		ft_error(game, "no coins");
+		ft_error(game, "Error: Map has no objectives.");
 	else if (game->map_data.exit == 0)
-		ft_error(game, "no exit");
+		ft_error(game, "Error: Map is not exitable.");
 	else if (game->map_data.players != 1)
-		ft_error(game, "singleplayer only");
+		ft_error(game, "Error: Map does not have only 1 player.");
 }
 
 void	ft_check_map(t_game *game)
 {
-	ft_printf("row:%d\n", game->map_data.rows);
-	ft_printf("col:%d\n", game->map_data.columns);
+	ft_printf("Map information:\n");
+	ft_printf("Rows:%d\n", game->map_data.rows);
+	ft_printf("Cols:%d\n", game->map_data.columns);
 	ft_check_walls(game);
 	ft_count_objectives(game);
 	ft_check_objectives(game);

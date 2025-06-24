@@ -55,14 +55,14 @@ void	ft_check_playable(t_game *game)
 	exitable = false;
 	temp = (char **)malloc(sizeof(char *) * (game->map_data.rows + 1));
 	if (temp == NULL)
-		ft_error(game, "malloc fail");
+		ft_error(game, "Failed to allocate memory for temporary map.");
 	ft_copy_map(game, temp);
 	ft_check_exitable(temp, game->map_data.plyr_x, \
 			game->map_data.plyr_y, &exitable);
 	if (!exitable)
 	{
 		ft_free_map_temp(temp, game->map_data.rows);
-		ft_error(game, "no path to exit");
+		ft_error(game, "Error: Map is not exitable.");
 	}
 	ft_free_map_temp(temp, game->map_data.rows);
 }

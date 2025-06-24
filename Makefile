@@ -25,26 +25,32 @@ GNL_FILES = $(GNL_DIR)/get_next_line.c \
 LIBFT_A = $(INC)/libft/libft.a
 LIBFTPRINTF_A = $(INC)/ft_printf/libftprintf.a
 
-all: $(SL_O)
-	@make -C ./includes/minilibx
-	@make -C ./includes/ft_printf
-	@make -C ./includes/libft
-	@$(CC) $(CFLAGS) $(MLX) $(NAME).c $(SL_UTILS) -g $(LIBFT_A) $(LIBFTPRINTF_A) $(GNL_FILES) -o $(NAME)
+
+all: $(NAME) 
+
+$(NAME): $(SL_O)
+	make -C ./includes/minilibx
+	make -C ./includes/ft_printf
+	make -C ./includes/libft
+	$(CC) $(CFLAGS) $(MLX) $(NAME).c $(SL_UTILS) -g $(LIBFT_A) $(LIBFTPRINTF_A) $(GNL_FILES) -o $(NAME)
+
 
 fsan: 
-	@make -C ./includes/minilibx
-	@make -C ./includes/ft_printf
-	@make -C ./includes/libft
-	@$(CC) $(CFLAGS) $(FSAN) $(MLX) $(NAME).c $(SL_UTILS) -g $(LIBFT_A) $(LIBFTPRINTF_A) $(GNL_FILES) -o $(NAME)
+	make -C ./includes/minilibx
+	make -C ./includes/ft_printf
+	make -C ./includes/libft
+	$(CC) $(CFLAGS) $(FSAN) $(MLX) $(NAME).c $(SL_UTILS) -g $(LIBFT_A) $(LIBFTPRINTF_A) $(GNL_FILES) -o $(NAME)
 
 clean:
-	@make clean -C $(INC)/libft
-	@make clean -C $(INC)/ft_printf
-	@make clean -C $(INC)/minilibx
+	make clean -C $(INC)/libft
+	make clean -C $(INC)/ft_printf
+	make clean -C $(INC)/minilibx
 
 fclean: clean
-	@make fclean -C $(INC)/libft
-	@make fclean -C $(INC)/ft_printf
-	@$(RM) $(NAME)
+	make fclean -C $(INC)/libft
+	make fclean -C $(INC)/ft_printf
+	$(RM) $(NAME)
 
-.PHONY: all clean fclean
+re: fclean all
+
+.PHONY: all clean fclean re
