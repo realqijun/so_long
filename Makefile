@@ -29,11 +29,11 @@ LIBFTPRINTF_A = $(INC)/ft_printf/libftprintf.a
 all: $(NAME) 
 
 $(NAME): $(SL_O)
-	make -C ./includes/minilibx
-	make -C ./includes/ft_printf
-	make -C ./includes/libft
-	$(CC) $(CFLAGS) $(MLX) $(NAME).c $(SL_UTILS) $(LIBFT_A) $(LIBFTPRINTF_A) $(GNL_FILES) -o $(NAME)
-
+	@make -C ./includes/minilibx
+	@make -C ./includes/ft_printf
+	@make -C ./includes/libft
+	@$(CC) $(CFLAGS) $(MLX) $(NAME).c $(SL_UTILS) $(LIBFT_A) $(LIBFTPRINTF_A) $(GNL_FILES) -o $(NAME)
+	@echo "\033[1;31mBuild complete.\033[0m" 
 
 # debug: 
 # 	make -C ./includes/minilibx
@@ -42,14 +42,14 @@ $(NAME): $(SL_O)
 # 	$(CC) $(CFLAGS) $(FSAN) $(MLX) $(NAME).c $(SL_UTILS) -g $(LIBFT_A) $(LIBFTPRINTF_A) $(GNL_FILES) -o $(NAME)
 
 clean:
-	make clean -C $(INC)/libft
-	make clean -C $(INC)/ft_printf
-	make clean -C $(INC)/minilibx
+	@make clean -C $(INC)/libft
+	@make clean -C $(INC)/ft_printf
+	@make clean -C $(INC)/minilibx
 
 fclean: clean
-	make fclean -C $(INC)/libft
-	make fclean -C $(INC)/ft_printf
-	$(RM) $(NAME)
+	@make fclean -C $(INC)/libft
+	@make fclean -C $(INC)/ft_printf
+	@$(RM) $(NAME)
 
 re: fclean all
 
